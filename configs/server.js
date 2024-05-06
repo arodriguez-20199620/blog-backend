@@ -5,23 +5,31 @@ import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import { dbConnection } from "./mongo.js";
+import commentsRoutes from "../src/routes/comment.routes.js";
+import projectRoutes from "../src/routes/project.routes.js";
+
 
 class Server {
   constructor() {
-    this.notes();
     this.app = express();
     this.port = process.env.PORT;
+    this.commentsPath = '/blog/v1/comments'
+    this.projectPath = '/blog/v1/projects'
 
     this.middlewares();
-    this.conectDB();
+    this.connectDB();
     this.routes();
   }
 
-  async conectDB() {
+  async connectDB() {
     await dbConnection();
   }
 
-  routes() {}
+  routes() {
+    this.app.use(this.commentsPath, commentsRoutes);
+    this.app.use(this.projectPath, projectRoutes);
+
+  }
 
   middlewares() {
     this.app.use(express.urlencoded({ extended: false }));
@@ -37,15 +45,7 @@ class Server {
     });
   }
 
-  notes() {
-    console.log("");
-    console.log("");
-    console.log("NOTE: Server constructor called!");
-    console.log("if port 3000 is in use:");
-    console.log("netstat -ano | findstr :3000");
-    console.log("taskkill /PID <PID> /F");
-    console.log("");
-  }
+
 }
 
 export default Server;
