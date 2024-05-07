@@ -10,7 +10,7 @@ export const createProject = async (req, res) => {
             code,
             authorName,
             authorEmail,
-            image: req.imagePath // Guardar el nombre del archivo de la imagen en el campo 'image'
+            image: req.imagePath
         });
 
         await project.save();
@@ -33,18 +33,29 @@ export const getProjects = async (req, res) => {
 export const editProject = async (req, res) => {
     try {
         const { projectId } = req.params;
+
         const { title, description, code } = req.body;
-        const project = await Project.findByIdAndUpdate(projectId, { title, description, code }, { new: true });
+
+        const updateFields = {};
+        if (title) updateFields.title = title;
+        if (description) updateFields.description = description;
+        if (code) updateFields.code = code;
+
+        const project = await Project.findByIdAndUpdate(projectId, updateFields, { new: true });
+
         res.status(200).json(project);
     } catch (error) {
         res.status(500).json({ error: 'Error al editar el proyecto' });
     }
 }
 
+
 export const deleteProject = async (req, res) => {
     try {
         const { projectId } = req.params;
-        await Project.findByIdAndDelete(projectId);
+        const project = await Project.findByIdAndUpdate(projectId, { state: false }, { new: true });
+        res.status(200).json(project);
+
         res.status(204).end();
     } catch (error) {
         res.status(500).json({ error: 'Error al eliminar el proyecto' });

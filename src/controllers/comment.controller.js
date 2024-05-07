@@ -14,7 +14,7 @@ export const createComment = async (req, res) => {
 export const getCommentsByProject = async (req, res) => {
     try {
         const { projectId } = req.params;
-        const comments = await Comment.find({ projectID: projectId });
+        const comments = await Comment.find({ projectID: projectId, state: true });
         res.status(200).json(comments);
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener los comentarios' });
@@ -35,8 +35,8 @@ export const editComment = async (req, res) => {
 export const deleteComment = async (req, res) => {
     try {
         const { commentId } = req.params;
-        await Comment.findByIdAndDelete(commentId);
-        res.status(204).send();
+        const comment = await Comment.findByIdAndUpdate(commentId, { state: false }, { new: true });
+        res.status(200).json(comment);
     } catch (error) {
         res.status(500).json({ error: 'Error al eliminar el comentario' });
     }
