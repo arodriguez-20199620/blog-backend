@@ -3,8 +3,8 @@ import Comment from '../models/comment.js';
 
 export const createComment = async (req, res) => {
     try {
-        const { content, authorName, authorEmail, projectID } = req.body;
-        const comment = await Comment.create({ content, authorName, authorEmail, projectID });
+        const { content, projectID } = req.body;
+        const comment = await Comment.create({ content, projectID });
         res.status(201).json(comment);
     } catch (error) {
         res.status(500).json({ error: 'Error al crear el comentario' });
