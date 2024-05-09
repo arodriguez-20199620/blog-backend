@@ -15,18 +15,18 @@ export const createProject = async (req, res) => {
 
         await project.save();
 
-        res.status(201).send(project);
-    } catch (error) {
-        res.status(500).json({ error: 'Error al crear el proyecto' });
+        res.status(201).json(project);
+    } catch (e) {
+        res.status(500).send('Error al crear el proyecto');
     }
 }
 
 export const getProjects = async (req, res) => {
     try {
         const projects = await Project.find({ state: true });
-        res.status(200).send(projects);
+        res.status(200).json(projects);
     } catch (error) {
-        res.status(500).json({ error: 'Error al obtener los proyectos' });
+        res.status(500).send('Error al obtener los proyectos');
     }
 }
 
@@ -44,8 +44,8 @@ export const editProject = async (req, res) => {
         const project = await Project.findByIdAndUpdate(projectId, updateFields, { new: true });
 
         res.status(200).json(project);
-    } catch (error) {
-        res.status(500).json({ error: 'Error al editar el proyecto' });
+    } catch (e) {
+        res.status(500).send('Error al editar el proyecto');
     }
 }
 
@@ -55,9 +55,7 @@ export const deleteProject = async (req, res) => {
         const { projectId } = req.params;
         const project = await Project.findByIdAndUpdate(projectId, { state: false }, { new: true });
         res.status(200).json(project);
-
-        res.status(204).end();
-    } catch (error) {
-        res.status(500).json({ error: 'Error al eliminar el proyecto' });
+    } catch (e) {
+        res.status(500).send('Error al eliminar el proyecto');
     }
 }
