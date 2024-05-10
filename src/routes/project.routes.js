@@ -1,6 +1,6 @@
 import express from 'express';
 import { check } from 'express-validator';
-import { createProject, deleteProject, editProject, getProjects } from '../controllers/project.controller.js';
+import { createProject, deleteProject, editProject, getProjects, searchProject } from '../controllers/project.controller.js';
 import uploadImage from '../middlewares/uploadImage .js';
 import { validateFields } from '../middlewares/validateField.js';
 import { projectExistById } from '../helpers/validateProjects.js';
@@ -19,6 +19,13 @@ router.post('/',
 
 
 router.get('/', getProjects);
+
+router.get('/:projectId',
+    [
+        check("projectId", "The id is not a valid MongoDB format").isMongoId(),
+        check("projectId").custom(projectExistById),
+        validateFields
+    ], searchProject);
 
 router.put('/:projectId',
     [

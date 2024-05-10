@@ -5,6 +5,7 @@ import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import { dbConnection } from "./mongo.js";
+import commentsRoutes from "../src/routes/comment.routes.js";
 import projectRoutes from "../src/routes/project.routes.js";
 
 
@@ -12,6 +13,7 @@ class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
+    this.commentsPath = '/blog/v1/comments'
     this.projectPath = '/blog/v1/projects'
 
     this.middlewares();
@@ -24,6 +26,7 @@ class Server {
   }
 
   routes() {
+    this.app.use(this.commentsPath, commentsRoutes);
     this.app.use(this.projectPath, projectRoutes);
 
   }

@@ -2,17 +2,14 @@ import Project from '../models/project.js';
 
 export const createProject = async (req, res) => {
     try {
-        const { title, description, code, authorName, authorEmail, image } = req.body;
-
+        const { title, description, code, authorName, image } = req.body;
         const project = new Project({
             title,
             description,
             code,
             authorName,
-            authorEmail,
             image
         });
-
         await project.save();
 
         res.status(201).json(project);
@@ -24,6 +21,17 @@ export const createProject = async (req, res) => {
 export const getProjects = async (req, res) => {
     try {
         const projects = await Project.find({ state: true });
+        res.status(200).json(projects);
+    } catch (error) {
+        res.status(500).send('Error al obtener los proyectos');
+    }
+}
+
+export const searchProject = async (req, res) => {
+    try {
+        const { projectId } = req.params;
+
+        const projects = await Project.find({ _id: projectId, state: true });
         res.status(200).json(projects);
     } catch (error) {
         res.status(500).send('Error al obtener los proyectos');
