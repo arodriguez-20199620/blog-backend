@@ -14,6 +14,7 @@ router.post('/',
         check("title", "This field is required").notEmpty(),
         check("description", "This field is required").notEmpty(),
         check("code", "This field is required").notEmpty(),
+        check("course", "This field is required").notEmpty(),
         validateFields,
     ], createProject);
 

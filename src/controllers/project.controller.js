@@ -2,13 +2,14 @@ import Project from '../models/project.js';
 
 export const createProject = async (req, res) => {
     try {
-        const { title, description, code, authorName, image } = req.body;
+        const { title, image, description, code, course } = req.body;
         const project = new Project({
             title,
+            image,
             description,
             code,
-            authorName,
-            image
+            course
+
         });
         await project.save();
 

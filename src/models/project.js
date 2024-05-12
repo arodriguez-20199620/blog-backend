@@ -16,9 +16,13 @@ const projectSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    course:{
+        type :String,
+        require: true
+    },
     authorName: {
         type: String,
-        required: true
+        default: "arodriguez-2019620"
     },
     createdAt: {
         type: Date,
