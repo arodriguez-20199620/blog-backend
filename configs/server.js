@@ -1,5 +1,6 @@
 "use strict";
 
+import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
@@ -34,6 +35,7 @@ class Server {
   middlewares() {
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(cors());
+    this.app.use(bodyParser.json({limit:'20mb'}))
     this.app.use(helmet());
     this.app.use(morgan("dev"));
     this.app.use(express.json());
